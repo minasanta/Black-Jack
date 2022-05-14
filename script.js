@@ -1,16 +1,30 @@
-let firstCard = getRandomIntInclusive(2,11)
-let secondCard = getRandomIntInclusive(2,11)
-let cards = [firstCard,secondCard]
-let sum = firstCard + secondCard
+let cards = []
+let sum = 0
 let hasBlackJack = false
-let isAlive = true
+let isAlive = false
 let message = ''
+let player = {
+    name: 'Mina',
+    chips: 145
+}
 const messageEl = document.getElementById("message-el")
 const sumEl = document.getElementById('sum-el')
 const cardsEl = document.getElementById('cards-el')
+const playerEl = document.getElementById('player-el')
+// playerEl.textContent = `${player.name}: $${player.chips}`
 
 function startGame() 
 {
+    hasBlackJack = false
+    isAlive = true
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards = [firstCard,secondCard]
+    sum = firstCard + secondCard
+    renderGame()
+}
+
+function renderGame() {
     cardsEl.textContent = `Cards:`
     for (let i=0; i < cards.length;i++)
     {
@@ -29,19 +43,20 @@ function startGame()
     messageEl.textContent = message
 }
 
-function renderGame() {startGame()}
-
 function newCard()
 {
-    let card = getRandomIntInclusive(2,11)
+    if (hasBlackJack || !isAlive)
+        return
+    let card = getRandomCard()
     sum += card
     cards.push(card)
     renderGame()
 }
 
-function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+function getRandomCard() {
+    let randomCard =  Math.floor(Math.random() * 13) + 1
+    if (randomCard === 1) {return 11}
+    else if (randomCard > 10) {return 10}
+    else return randomCard
   }
   
